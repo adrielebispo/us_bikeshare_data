@@ -2,9 +2,23 @@ import time
 import pandas as pd
 import numpy as np
 
-CITY_DATA = { 'chicago': 'chicago.csv',
-              'new york city': 'new_york_city.csv',
-              'washington': 'washington.csv' }
+def read_raw_data():
+    CITY_DATA = { 'chicago': 'data/chicago.csv',
+              'new york city': 'data/new_york_city.csv',
+              'washington': 'data/washington.csv' }
+
+    df_chicago = pd.read_csv(CITY_DATA['chicago'])
+    df_chicago.insert(1, 'City', 'Chicago')
+
+    df_ny = pd.read_csv(CITY_DATA['new york city'])
+    df_ny.insert(1, 'City', 'New York City')
+
+    df_washington = pd.read_csv(CITY_DATA['washington'])
+    df_washington.insert(1, 'City', 'Washington')
+
+    df = pd.concat([df_chicago, df_ny, df_washington])
+    
+    return df
 
 def get_filters():
     """
@@ -119,6 +133,7 @@ def user_stats(df):
 
 
 def main():
+    raw_df = read_raw_data()
     while True:
         city, month, day = get_filters()
         df = load_data(city, month, day)
